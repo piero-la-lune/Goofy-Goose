@@ -1,15 +1,21 @@
 @inc: "./inc/";
 
-@font-family: "Source Sans Pro", sans-serif;
-@font-size: 16px;
+@font-family: "Overlock", sans-serif;
+@font-size: 20px;
 
 @max-width: 800px;
+@left-width: 300px;
+
+@black: #444;
+@background: #eee;
+
+@blue: #0099cc;
 
 @link-color: #3366CC;
 @link-color2: spin(@link-color, 150);
 
-@green: #8DD69D;
-@red: #ED92AC;
+@green: #31bc86;
+@red: #EC3D6C;
 
 .border-radius(@radius) {
 	-webkit-border-radius: @radius;
@@ -35,19 +41,25 @@
 }
 
 @font-face {
-	font-family: "Source Sans Pro";
+	font-family: "Overlock";
 	font-style: normal;
 	font-weight: 400;
-	src: local("Source Sans Pro"), local("SourceSansPro-Regular"),
-		url("@{inc}SourceSansPro-Regular.woff") format("woff");
+	src: local("Overlock"), local("Overlock-Regular"),
+		url("@{inc}Overlock-Regular.ttf") format("truetype");
 }
 
 @font-face {
-	font-family: "Source Sans Pro";
+	font-family: "Overlock";
+	font-style: normal;
+	font-weight: 700;
+	src: local("Overlock-Bold"), url("@{inc}Overlock-Bold.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "Overlock";
 	font-style: normal;
 	font-weight: 900;
-	src: local("Source Sans Pro Black"), local("SourceSansPro-Black"),
-		url("@{inc}SourceSansPro-Black.woff") format("woff");
+	src: local("Overlock-Black"), url("@{inc}Overlock-Black.ttf") format("truetype");
 }
 
 html, body {
@@ -62,11 +74,38 @@ body {
 	margin: 0 auto;
 	-webkit-text-size-adjust: 100%;
 	-webkit-font-smoothing: antialiased;
+	background: @background;
+	color: @black;
+	padding-left: @left-width;
 }
 
 h1 {
-	font-weight: 900;
+	font-size: 3em;
 	&.center { text-align: center; }
+	span {
+		display: inline-block;
+		background: #fff;
+		.border-radius(3px);
+		padding: 4px 8px;
+		margin: 15px 6px 6px 24px;
+		font-weight: normal;
+		font-size: 0.5em;
+		vertical-align: top;
+	}
+}
+h2 {
+	font-size: 2em;
+	a {
+		display: inline-block;
+		font-size: 0.8em;
+		color: #aaa;
+		vertical-align: top;
+		margin: 3px 0 0 12px;
+		&:hover {
+			text-decoration: none;
+			color: #444;
+		}
+	}
 }
 
 p {
@@ -104,48 +143,125 @@ object {
 	margin: auto;
 }
 
+form p {
+	display: table;
+	width: 100%;
+	margin: 24px 0 0 0;
+}
 label {
-	display: block;
-	margin: 12px 0 0 8px;
+	display: table-cell;
+	width: 200px;
+	padding: 8px;
+	margin: 0;
+	background: @blue;
+	color: #fff;
+	text-align: right;
+	.border-radius(3px 0 0 3px);
 }
 input, select, textarea, button {
+	display: table-cell;
+	width: 100%;
+	padding: 8px;
+	margin: 0;
 	font-size: @font-size;
 	font-weight: normal;
 	font-family: @font-family;
-	border: 3px solid #DDD;
-	&:focus { border-color: #444; }
-	.border-radius(2px);
-}
-input, select, textarea {
-	display: block;
-	margin: 0;
-	padding: 4px;
-	width: 100%;
-	max-width: 400px;
+	background: #fff;
+	&:focus {
+		outline: none;
+		box-shadow: 0 0 8px #75c1da;
+		border-color: #75c1da;
+	}
+	border: none;
+	.border-radius(0 3px 3px 0);
 	.box-sizing(border-box);
 }
 input {
-	-webkit-appearance: none;
+	//-webkit-appearance: none;
 }
 input[type="submit"] {
-	display: inline;
-	width: auto;
-	background: #fafafa;
+	color: #fff;
+	background: @green;
+	font-weight: bold;
 	&:hover {
-		border-color: #444;
+		background: lighten(@green, 10%);
 	}
 	cursor: pointer;
+	.border-radius(3px);
 }
 .p-submit {
-	text-align: center;
-	margin-top: 24px;
-	max-width: 400px;
+	max-width: 200px;
+	margin: 24px auto;
 }
 .p-tip {
-	max-width: 400px;
-	font-style: italic;
 	color: #888;
-	font-size: 0.9em;
+	font-size: 0.8em;
+	margin-top: 4px;
+	text-align: right;
+}
+
+aside {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	overflow-x: hidden;
+	overflow-y: auto;
+	background: #0d0d0d;
+}
+nav {
+	width: @left-width - 2*24px;
+	margin: 24px;
+	font-size: 1.4em;
+	color: #eee;
+	a {
+		display: block;
+		margin: 0 0 16px 0;
+		color: #bbb;
+		&:hover {
+			color: #fff;
+			text-decoration: none;
+		}
+		&.selected {
+			color: @blue;
+		}
+		&.a-show {
+			display: none;
+		}
+		&.selected.a-show {
+			display: block;
+			margin-left: 24px;
+		}
+	}
+	#back {
+		margin-bottom: 32px;
+		color: #d4291f;
+		display: none;
+		&:before {
+			content: "‹";
+			padding-right: 12px;
+		}
+	}
+	#series {
+		&:hover:after {
+			content: "›";
+			padding-left: 12px;
+		}
+	}
+	&.display-series {
+		a {
+			display: none;
+		}
+		a.a-show {
+			display: block;
+		}
+		a.selected.a-show {
+			margin-left: 0;
+		}
+		#back {
+			display: block;
+		}
+	}
 }
 
 header {
@@ -299,12 +415,153 @@ header {
 	padding: 12px;
 	text-align: center;
 	cursor: pointer;
-	color: #444;
-	&:hover { color: #000; }
+	color: #fff;
 }
 .alert-error {
 	background: @red;
+	&:hover {
+		background: lighten(@red, 10%);
+	}
 }
 .alert-success {
 	background: @green;
+	&:hover {
+		background: lighten(@green, 10%);
+	}
+}
+
+.ul-search {
+	list-style: none;
+	color: #fff;
+	font-size: 1.4em;
+	padding: 0;
+	margin: 0;
+	text-align: center;
+	span {
+		display: block;
+		margin-bottom: 12px
+	}
+	li {
+		display: inline-block;
+		padding: 12px;
+		margin: 12px;
+		background: @blue;
+		.border-radius(3px);
+	}
+	form {
+		display: block;
+	}
+	input {
+		display: inline-block;
+		width: auto;
+	}
+}
+.ul-episodes {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	li {
+		margin: 0;
+		padding: 0;
+		display: inline-block;
+	}
+	a {
+		margin: 4px;
+		padding: 6px 10px;
+		font-size: 1.2em;
+		background: #fff;
+		color: @black;
+		.border-radius(3px);
+		display: inline-block;
+		min-width: 30px;
+		text-align: center;
+		&:hover {
+			text-decoration: none;
+			background: darken(#fff, 10%);
+		}
+		&.released {
+			background: @blue;
+			color: #fff;
+			&:hover {
+				background: lighten(@blue, 10%);
+			}
+		}
+		&.watched {
+			background: @green;
+			color: #fff;
+			&:hover {
+				background: lighten(@green, 10%);
+			}
+		}
+	}
+}
+.div-episode {
+	margin: 12px 0 0 0;
+	padding: 12px;
+	.border-radius(3px);
+	display: none;
+	background: #fff;
+	.span-desc {
+		display: block;
+	}
+	.span-date, .span-no {
+		display: inline-block;
+		padding: 4px 8px;
+		margin: 0 0 12px 0;
+		background: @background;
+		color: @black;
+		.border-radius(3px);
+	}
+	.span-no {
+		margin-right: 12px;
+		font-size: 1.4em;
+		font-weight: bold;
+	}
+	.span-name {
+		margin-right: 12px;
+	}
+	&.released {
+		background: @blue;
+		color: #fff;
+	}
+	&.watched {
+		background: @green;
+		color: #fff;
+	}
+}
+.div-season {
+	.span-name {
+		display: block;
+		padding: 4px 8px;
+		margin: 32px 0 12px 0;
+		background: @blue;
+		color: #fff;
+		.border-radius(3px);
+		font-size: 1.4em;
+		font-weight: bold;
+		&:hover {
+			text-decoration: none;
+			background: lighten(@blue, 10%);
+		}
+	}
+	.span-no {
+		display: inline-block;
+		padding: 4px 8px;
+		margin: 6px;
+		background: #fff;
+		.border-radius(3px);
+	}
+}
+.div-days {
+	.span-day {
+		display: block;
+		font-size: 1.3em;
+	}
+	.span-episode {
+		display: inline-block;
+		padding: 4px 8px;
+		margin: 6px;
+		background: #fff;
+		.border-radius(3px);
+	}
 }

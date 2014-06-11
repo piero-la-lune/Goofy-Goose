@@ -255,10 +255,28 @@ $pagename = $page->getPageName();
 
 $menu = '';
 if ($page->printHeader()) {
+	$manager = Manager::getInstance();
+	$shows = '';
+	foreach ($manager->getShows() as $id => $s) {
+		$shows .= '<a href="'.Url::parse('show/'.$id).'" class="a-show';
+		if ($pagename == 'show' && isset($_GET['id']) && $id == $_GET['id']) {
+			$shows .= ' selected';
+		}
+		$shows .= '">'.$s['name'].'</a>';
+	}
 	$menu .= ''
+		.'<a href="#" id="back">'.mb_strtolower(Trad::W_BACK).'</a>'
 		.'<a href="'.Url::parse('home').'"'
 			.($pagename == 'home' ? 'class="selected"' : '').'>'
 			.mb_strtolower(Trad::T_HOME)
+		.'</a>'
+		.'<a href="#" id="series">'
+			.mb_strtolower(Trad::T_SHOWS)
+		.'</a>'
+		.$shows
+		.'<a href="'.Url::parse('add').'"'
+			.($pagename == 'add' ? 'class="selected"' : '').'>'
+			.mb_strtolower(Trad::T_ADD)
 		.'</a>'
 		.'<a href="'.Url::parse('settings').'"'
 			.($pagename == 'settings' ? 'class="selected"' : '').'>'
@@ -289,11 +307,11 @@ if ($page->printHeader()) {
 
 		<?php echo $page->getAlerts(); ?>
 
-		<header>
-			<nav>
+		<aside>
+			<nav id="nav">
 				<?php echo $menu; ?>
 			</nav>
-		</header>
+		</aside>
 
 		<section class="inner">
 			<?php echo $page->getContent(); ?>

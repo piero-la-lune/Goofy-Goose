@@ -16,6 +16,14 @@ class Url {
 			'redirect' => 'index.php?page=home'
 		),
 		array(
+			'rule' => '^add$',
+			'redirect' => 'index.php?page=add'
+		),
+		array(
+			'rule' => '^show/([0-9]+)$',
+			'redirect' => 'index.php?page=show&id=$1'
+		),
+		array(
 			'rule' => '^install$',
 			'redirect' => 'index.php?page=install'
 		),
@@ -99,6 +107,11 @@ class Url {
 			}
 		}
 		return $page;
+	}
+
+	public static function is_correct_url($url) {
+		$headers = get_headers($url);
+		return substr($headers[0], 9, 3) == '200';
 	}
 
 }

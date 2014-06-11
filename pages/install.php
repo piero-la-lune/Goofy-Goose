@@ -35,16 +35,17 @@
 
 	if (isset($_POST['language']) && Text::check_language($_POST['language'])) {
 		$content .= '
-	<label for="login">'.Trad::F_USERNAME.'</label>
-	<input type="text" name="login" id="login" />
-	<label for="password">'.Trad::F_PASSWORD.'</label>
-	<input type="password" name="password" id="password" />
+	
+	<p><label for="login">'.Trad::F_USERNAME.'</label>
+	<input type="text" name="login" id="login" /></p>
+	<p><label for="password">'.Trad::F_PASSWORD.'</label>
+	<input type="password" name="password" id="password" /></p>
 
 	<p>&nbsp;</p>
 
-	<label for="url">'.Trad::F_URL.'</label>
+	<p><label for="url">'.Trad::F_URL.'</label>
 	<input type="url" name="url" id="url" value="'
-		.Text::chars($config['url']).'" />
+		.Text::chars($config['url']).'" /></p>
 
 	<input type="hidden" name="action" value="install" />
 	<input type="hidden" name="language" value="'.$_POST['language'].'" />
@@ -57,10 +58,10 @@
 			$languages[$v] = $v;
 		}
 		$content .= '
-	<label for="language">'.Trad::F_LANGUAGE.'</label>
+	<p><label for="language">'.Trad::F_LANGUAGE.'</label>
 	<select id="language" name="language">
 		'.Text::options($languages, DEFAULT_LANGUAGE).'
-	</select>
+	</select></p>
 		';
 	}
 

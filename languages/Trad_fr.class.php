@@ -20,17 +20,24 @@ class Trad {
 	const W_MONTH_P = 'mois';
 	const W_YEAR_P = 'années';
 	const W_DECADE_P = 'décennies';
+	const W_BACK = 'Retour';
+
+	const W_SEASON_NB = 'Saison %nb%';
 
 		# Phrases
 
 	const S_AGO = 'il y a %duration% %pediod%';
 	const S_NOTFOUND = 'La page que vous recherchez n\'existe pas…';
 
+	const S_NO_EPISODE = 'Aucun épisode en attente…';
+
 		# Verbes
 
 	const V_LOGIN = 'Se connecter';
 	const V_CONTINUE = 'Continuer';
 	const V_SAVE = 'Enregistrer';
+	const V_ADD = 'Ajouter';
+	const V_SEARCH = 'Rechercher';
 
 		# Forms
 
@@ -42,6 +49,8 @@ class Trad {
 	const F_URL = 'URL :';
 	const F_URL_REWRITING = 'URL rewriting :';
 	const F_LANGUAGE = 'Langue :';
+
+	const F_SHOWNAME = 'Nom de la série :';
 
 	const F_TIP_PASSWORD = 'Laissez vide pour ne pas le changer.';
 	const F_TIP_URL_REWRITING = 'Laissez vide pour désactiver l\'URL rewriting. Sinon, indiquez le chemin du dossier de Goofy Goose (en commençant et terminant par un "/") par rapport au nom de domaine.';
@@ -55,7 +64,12 @@ class Trad {
 	const T_SETTINGS = 'Préférences';
 	const T_GLOBAL_SETTINGS = 'Réglages généraux';
 	const T_USER_SETTINGS = 'Utilisateur';
-	const T_HOME = 'Accueil';
+	const T_HOME = 'À voir';
+	const T_ADD = 'Ajouter une série';
+	const T_SEARCH_RESULT = 'Résultats pour « %showname% »';
+	const T_SHOWS = 'Séries';
+	const T_DATA = 'Données';
+	const T_SOON = 'Bientôt…';
 
 		# Alertes
 
@@ -65,11 +79,26 @@ class Trad {
 	const A_ERROR_AJAX = 'Une erreur est survenue. Merci de réessayer.';
 	const A_ERROR_AJAX_LOGIN = 'Vous êtes déconnecté. Raffraichissez la page, connectez-vous, puis vous pourrez réessayer.';
 
+	const A_ERROR_NOSHOW = 'Aucune série n\'a été trouvée.';
+	const A_ERROR_ADD = 'Impossible d\'ajouter la série.';
+
 	const A_SUCCESS_INSTALL = 'Goofy Goose est maintenant correctement installé. Connectez-vous pour commencer à l\'utiliser.';
 	const A_SUCCESS_SETTINGS = 'Les préférences ont bien été enregistrées.';
 
+	const A_SUCCESS_ADD = 'La série a bien été ajoutée.';
+
 	public static $settings = array(
 		'validate_url' => 'L\'url n\'est pas valide.'
+	);
+
+	public static $days = array(
+		0 => 'Dimanche',
+		1 => 'Lundi',
+		2 => 'Mardi',
+		3 => 'Mercredi',
+		4 => 'Jeudi',
+		5 => 'Vendredi',
+		6 => 'Samedi'
 	);
 
 }

@@ -9,6 +9,8 @@ class Page {
 
 	private $pages = array(
 		'home',
+		'add',
+		'show',
 		'install',
 		'login',
 		'error/404',
