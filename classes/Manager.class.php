@@ -58,8 +58,9 @@ class Manager {
 					if (!$e['watched'] && !empty($e['date'])) {
 						if ($e['date'] < $date) {
 							$eps[] = array(
+								'id' => $id,
 								'no' => Manager::no($snb, $enb),
-								'desc' => $e['desc']
+								'name' => $e['name']
 							);
 						}
 						else {
@@ -166,6 +167,68 @@ class Manager {
 		return true;
 	}
 
+	public function update_addic7ed($id, $post) {
+		if (!isset($this->shows[$id]) || !isset($post['addic7ed'])) {
+			return false;
+		}
+		if (empty($post['addic7ed'])) { 
+			$this->shows[$id]['addic7ed'] = false;
+		}
+		else {
+			$headers = get_headers('http://www.addic7ed.com/show/'.$post['addic7ed']);
+			if (strpos($headers[0], '200') === false) {
+				return false;
+			}
+			$this->shows[$id]['addic7ed'] = $post['addic7ed'];
+		}
+		$this->save();
+		return true;
+	}
+
+	public function subtitles($post) {
+		if (!isset($post['id']) || !isset($post['no'])) {
+			return false;
+		}
+		$id = $post['id'];
+		list($snb, $enb) = self::no_inv($post['no']);
+		if (!isset($this->shows[$id])
+			|| !$this->shows[$id]['addic7ed']
+			|| !isset($this->shows[$id]['seasons'][$snb])
+			|| !isset($this->shows[$id]['seasons'][$snb][$enb])) {
+			return false;
+		}
+		$dom = new DOMDocument();
+		libxml_use_internal_errors(true);
+		$dom->loadHTMLFile('http://www.addic7ed.com/ajax_loadShow.php?show='
+			.$this->shows[$id]['addic7ed'].'&season='.$snb.'&langs=|1|8|');
+		$trs = $dom->getElementsByTagName('tr');
+		$subtitles = array('fr' => array(), 'en' => array());
+		foreach ($trs as $tr) {
+			$ok = false;
+			foreach ($tr->attributes as $attr) {
+				if (strpos($attr->nodeValue, 'completed') !== false) {
+					$ok = true;
+					break;
+				}
+			}
+			if (!$ok) { continue; }
+			$tds = $tr->getElementsByTagName('td');
+			if ($tds->item(1)->nodeValue != $enb) { continue; }
+			$language = ($tds->item(3)->nodeValue == 'English') ? 'en' : 'fr';
+			$a = $tds->item(9)->getElementsByTagName('a')->item(0);
+			$arr = array();
+			if (!empty($tds->item(6)->nodeValue)) { $arr[] = 'S'; }
+			if (!empty($tds->item(7)->nodeValue)) { $arr[] = 'C'; }
+			if (!empty($tds->item(8)->nodeValue)) { $arr[] = 'HD'; }
+			$subtitles[$language][] = array(
+				'url' => 'http://www.addic7ed.com'.$a->attributes->item(0)->nodeValue,
+				'version' => $tds->item(4)->nodeValue,
+				'sigles' => implode(' ', $arr)
+			);
+		}
+		return $subtitles;
+	}
+
 	public function episode_watched($post) {
 		if (!isset($post['id']) || !isset($this->shows[$post['id']])
 			|| !isset($post['no'])) {
@@ -261,6 +324,16 @@ class Manager {
 		$content .= $list;
 		$content .= $episodes;
 		return $content;
+	}
+
+	public static function display_subtitles($subtitles) {
+		$arr = array();
+		foreach ($subtitles as $s) {
+			$sigles = $s['sigles'];
+			if (!empty($sigles)) { $sigles = ' ('.$sigles.')'; }
+			$arr[] = '<a href="'.$s['url'].'">'.$s['version'].'</a>'.$sigles;
+		}
+		return implode(' – ', $arr);
 	}
 
 }

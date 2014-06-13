@@ -141,6 +141,14 @@ function episode_popup(e) {
 	var p = src.parentNode;
 	var w = p.querySelector('.div-desc');
 	var pos = src.getBoundingClientRect();
+	// Ajax
+	var ajax = new Ajax(undefined, 'subtitles');
+	ajax.addParam('id', src.dataset.id);
+	ajax.addParam('no', src.textContent);
+	ajax.send(function(ans) {
+		w.querySelector('.div-subtitles').innerHTML = ans.ans;
+	});
+	// Display
 	w.classList.add('no-transition');
 	w.style.width = pos.width+'px';
 	w.style.height = pos.height+'px';
@@ -161,6 +169,14 @@ function episode_popup(e) {
 		w.style.top = pos.top+'px';
 		w.style.left = pos.left+'px';
 		p.classList.remove('open');
+	};
+	p.querySelector('.span-watched').onclick = function() {
+		var ajax = new Ajax(undefined, 'watched');
+		ajax.addParam('id', src.dataset.id);
+		ajax.addParam('no', src.textContent);
+		ajax.send(function(ans) {
+			p.parentNode.removeChild(p);
+		});
 	};
 }
 for (var i = a_episode.length - 1; i >= 0; i--) {

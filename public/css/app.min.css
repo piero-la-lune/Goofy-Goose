@@ -558,9 +558,31 @@ header a.selected {
   border-radius: 3px;
 }
 .div-season .div-e .div-desc > div {
-  margin: 10px;
   opacity: 0;
   transition: opacity 0.1s 0s;
+}
+.div-season .div-e .div-desc .span-name {
+  margin: 0;
+  padding: 6px;
+  -webkit-border-radius: 3px 3px 0 0;
+  -moz-border-radius: 3px 3px 0 0;
+  border-radius: 3px 3px 0 0;
+}
+.div-season .div-e .div-desc .span-name:hover {
+  background: #0099cc;
+}
+.div-season .div-e .div-desc .div-subtitles {
+  margin: 16px 0;
+  padding: 0 16px;
+  max-height: 130px;
+  overflow-y: auto;
+  font-size: 0.9em;
+}
+.div-season .div-e .div-desc .div-subtitles .span-language {
+  font-size: 1.1em;
+}
+.div-season .div-e .div-desc .div-subtitle:first-child {
+  margin-bottom: 16px;
 }
 .div-season .div-e.open::before {
   opacity: 1;
@@ -582,20 +604,27 @@ header a.selected {
   opacity: 1;
   transition: opacity 0.1s 0.4s;
 }
-.div-season .div-e .span-close {
+.div-season .div-e .span-close,
+.div-season .div-e .span-watched {
   display: block;
   float: right;
-  margin: 0 0 12px 12px;
-  padding: 2px 6px;
+  margin-left: 12px;
+  padding: 0 6px;
   cursor: pointer;
   transition: background 0.1s, color 0.1s;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
 }
-.div-season .div-e .span-close:hover {
-  background: #444;
-  color: #fff;
+.div-season .div-e .span-close:hover,
+.div-season .div-e .span-watched:hover {
+  background: #fff;
+  color: #0099cc;
+}
+.div-season .div-e .span-watched {
+  float: left;
+  margin-left: 0;
+  margin-right: 12px;
 }
 .div-season .span-name {
   display: block;

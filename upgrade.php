@@ -17,11 +17,11 @@ function strict_lower($a, $b) {
 	return false;
 }
 
-if (strict_lower($config['version'], '0.2')) {
+if (strict_lower($config['version'], '0.3')) {
 
 	$shows = Text::unhash(get_file(FILE_SHOWS));
-	foreach ($shows as $s) {
-		$s['addic7ed'] = false;
+	foreach ($shows as $k => $s) {
+		$shows[$k]['addic7ed'] = false;
 	}
 	update_file(FILE_SHOWS, Text::hash($shows));
 
