@@ -238,9 +238,9 @@ if (isset($cron_job) && $cron_job == true) {
 	shuffle($keys);
 	foreach ($keys as $k) {
 		$manager->add(array('id' => $k));
-		echo $shows[$k]['name'].' was updated.';
+		echo $shows[$k]['name'].' was updated.'."\n";
 	}
-	echo 'Done.'."\n";
+	echo "\n".'Done.'."\n";
 	exit;
 }
 
