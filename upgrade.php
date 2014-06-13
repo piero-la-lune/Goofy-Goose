@@ -17,11 +17,15 @@ function strict_lower($a, $b) {
 	return false;
 }
 
-/*if (strict_lower($config['version'], '1.0')) {
+if (strict_lower($config['version'], '0.2')) {
 
-	// ...
+	$shows = Text::unhash(get_file(FILE_SHOWS));
+	foreach ($shows as $s) {
+		$s['addic7ed'] = false;
+	}
+	update_file(FILE_SHOWS, Text::hash($shows));
 
-}*/
+}
 
 $settings = new Settings();
 if ($config['url_rewriting']) { $settings->url_rewriting(); }

@@ -128,6 +128,7 @@ class Manager {
 				'name' => Text::chars($name),
 				'banner' => 'http://thetvdb.com/banners/'.Text::chars($banner),
 				'network' => Text::chars($network),
+				'addic7ed' => false,
 				'seasons' => array()
 			);
 		}
