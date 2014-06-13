@@ -233,6 +233,13 @@ if (isset($cron_job) && $cron_job == true) {
 	$manager = Manager::getInstance();
 	echo 'Cron jobs for Goofy Goose ('.date('r').')'."\n";
 	echo '==========================================================='."\n\n";
+	$shows = $manager->getShows();
+	$keys = array_keys($shows);
+	shuffle($keys);
+	foreach ($keys as $k) {
+		$manager->add(array('id' => $k));
+		echo $shows[$k]['name'].' was updated.';
+	}
 	echo 'Done.'."\n";
 	exit;
 }
