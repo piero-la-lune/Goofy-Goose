@@ -135,105 +135,34 @@ for (var i = a_season.length - 1; i >= 0; i--) {
 	a_season[i].onclick = season_watched;
 }
 
-function onload_tags() {
-	var editTags = document.querySelector('.editTags');
-	var list = editTags.querySelector('span');
-	var tags = document.getElementById('tags');
-	var addTag = document.getElementById('addTag');
-	var pick = document.querySelector('.pick-tag');
-	var pick_tags = pick.querySelectorAll('span');
-	function update_tags_input() {
-		var as = editTags.querySelectorAll('.tag');
-		var arr = [];
-		for (var i=0; i<as.length; i++) { arr.push(as[i].innerHTML); }
-		tags.value = arr.join(',');
-	}
-	function remove_tags(e) {
-		e.target.parentNode.removeChild(e.target);
-		update_tags_input();
-		return false;
-	}
-	function append_tag(tag) {
-		var a = document.createElement('a');
-		a.href = '#';
-		a.className = 'tag';
-		a.innerHTML = tag;
-		list.appendChild(a);
-		a.onclick = remove_tags;
-	}
-	function add_tag() {
-		if (addTag.value !== '') {
-			append_tag(addTag.value);
-			addTag.value = '';
-			update_tags_input();
-		}
-	}
-	function update_tags() {
-		if (tags.value !== '') {
-			var arr = tags.value.split(/,/);
-			for (var i=0; i<arr.length; i++) { append_tag(arr[i]); }
-		}
-	}
-	var keepFocus = false;
-	pick.onmousedown = function(e) {
-		if (e.target.className == 'visible') {
-			// on n'a pas cliqué sur la barre de défilemenent ni sur la bordure
-			// mais bien sur un nom de tag
-			addTag.value = e.target.innerHTML;
-			add_tag();
-			keepFocus = true; // on veut que addTag garde le focus
-		}
+a_episode = document.querySelectorAll('.div-season .span-no');
+function episode_popup(e) {
+	var src = e.target;
+	var p = src.parentNode;
+	var w = p.querySelector('.div-desc');
+	var pos = src.getBoundingClientRect();
+	w.classList.add('no-transition');
+	w.style.width = pos.width+'px';
+	w.style.height = pos.height+'px';
+	w.style.top = pos.top+'px';
+	w.style.left = pos.left+'px';
+	setTimeout(function() {
+		w.classList.remove('no-transition');
+		w.style.removeProperty('width');
+		w.style.removeProperty('height');
+		w.style.removeProperty('top');
+		w.style.removeProperty('left');
+		p.classList.add('open');
+	}, 25);
+	p.querySelector('.span-close').onclick = function() {
+		var pos = src.getBoundingClientRect();
+		w.style.width = pos.width+'px';
+		w.style.height = pos.height+'px';
+		w.style.top = pos.top+'px';
+		w.style.left = pos.left+'px';
+		p.classList.remove('open');
 	};
-	addTag.onkeydown = function(e) {
-		if ((('keyCode' in e) && (e.keyCode == 13 || e.keyCode == 188)) ||
-			(('key' in e) && (e.key == 'Enter' || e.key == ','))) {
-			add_tag();
-			addTag.blur();
-			addTag.focus();
-			return false;
-		}
-		if (('keyCode' in e && e.keyCode == 9) ||
-			('key' in e && e.key == 'Tab')) {
-			var elm = form.list.querySelector('.visible');
-			if (elm !== null) {
-				// on récupère le premier élément de la liste déroulante
-				addTag.value = elm.innerHTML;
-				add_tag();
-				addTag.blur();
-				addTag.focus();
-			}
-			return false;
-		}
-	};
-	addTag.onfocus = function() {
-		var pos = addTag.getBoundingClientRect();
-		pick.style.left = pos.left+'px';
-		pick.style.top = pos.bottom+'px';
-		addTag.onkeyup(); // On initialise la liste en fonction de addTag
-	};
-	addTag.onblur = function(e) {
-		if (!keepFocus) {
-			pick.style.left = '-9999px';
-			pick.style.top = '-9999px';
-		}
-		else {
-			keepFocus = false;
-			// pour Firefox qui ne doit pas apprécier qu'on empêche cette action
-			setTimeout("document.getElementById('addTag').focus()", 10);
-		}
-	};
-	addTag.onkeyup = function() {
-		var val = addTag.value;
-		for (var i=0; i<pick_tags.length; i++) {
-			if (pick_tags[i].innerHTML.indexOf(val) === -1) {
-				pick_tags[i].className = '';
-			}
-			else {
-				pick_tags[i].className = 'visible';
-			}
-		}
-	};
-	tags.onupdate = update_tags;
-	update_tags();
 }
-if (isset(document.querySelector('.editTags'))) { onload_tags(); }
+for (var i = a_episode.length - 1; i >= 0; i--) {
+	a_episode[i].onclick = episode_popup;
+}

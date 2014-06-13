@@ -9,7 +9,12 @@
 			.'<a class="span-name" href="'.Url::parse('show/'.$s['id']).'">'
 			.$s['name'].'</a>';
 		foreach ($s['episodes'] as $e) {
-			$html_e .= '<span class="span-no">'.$e.'</span>';
+			$html_e .= '<div class="div-e">'
+				.'<span class="span-no">'.$e['no'].'</span>'
+				.'<div class="div-desc"><div>'
+					.'<span class="span-close">×</span>'.$e['desc'].'</div>'
+				.'</div>'
+				.'</div>';
 		}
 		$html_e .= '</div>';
 	}

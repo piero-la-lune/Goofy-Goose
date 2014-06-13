@@ -57,7 +57,10 @@ class Manager {
 				foreach ($s as $enb => $e) {
 					if (!$e['watched'] && !empty($e['date'])) {
 						if ($e['date'] < $date) {
-							$eps[] = Manager::no($snb, $enb);
+							$eps[] = array(
+								'no' => Manager::no($snb, $enb),
+								'desc' => $e['desc']
+							);
 						}
 						else {
 							$d = new DateTime($e['date']);
