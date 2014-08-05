@@ -15,7 +15,8 @@ class Page {
 		'login',
 		'error/404',
 		'settings',
-		'ajax'
+		'ajax',
+		'addic7ed'
 	);
 
 	public function load($page) {
