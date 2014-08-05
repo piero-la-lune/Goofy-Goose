@@ -197,6 +197,7 @@ class Manager {
 			|| !isset($this->shows[$id]['seasons'][$snb][$enb])) {
 			return false;
 		}
+		$show = Text::purge(Text::unchars($this->shows[$id]['name']));
 		$dom = new DOMDocument();
 		libxml_use_internal_errors(true);
 		$dom->loadHTMLFile('http://www.addic7ed.com/ajax_loadShow.php?show='
@@ -221,7 +222,7 @@ class Manager {
 			if (!empty($tds->item(7)->nodeValue)) { $arr[] = 'C'; }
 			if (!empty($tds->item(8)->nodeValue)) { $arr[] = 'HD'; }
 			$subtitles[$language][] = array(
-				'url' => 'http://www.addic7ed.com'.$a->attributes->item(0)->nodeValue,
+				'url' => Url::parse('addic7ed/'.$show.'/'.self::no($snb, $enb).'/'.$language.$a->attributes->item(0)->nodeValue),
 				'version' => $tds->item(4)->nodeValue,
 				'sigles' => implode(' ', $arr)
 			);
