@@ -18,13 +18,13 @@ if (isset($_GET['id']) && $show = $manager->getShow($_GET['id'])) {
 
 <h1>'.$show['name'].'<span>'.$show['network'].'</span></h1>
 
-<img src="'.$show['banner'].'" />
+<img class="img-show" src="'.$show['banner'].'" />
 
 	';
 
 	$id = intval($_GET['id']);
 	foreach ($show['seasons'] as $snb => $s) {
-		$content .= Manager::display_season($id, $snb, $s);
+		$content .= Manager::display_season($id, $snb, $s, $show['name'], $addic7ed);
 	}
 
 	$content .= '

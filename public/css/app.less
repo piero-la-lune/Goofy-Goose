@@ -95,17 +95,6 @@ h1 {
 }
 h2 {
 	font-size: 2em;
-	a {
-		display: inline-block;
-		font-size: 0.8em;
-		color: #aaa;
-		vertical-align: top;
-		margin: 3px 0 0 12px;
-		&:hover {
-			text-decoration: none;
-			color: #444;
-		}
-	}
 }
 
 p {
@@ -135,6 +124,9 @@ img {
 	display: block;
 	max-width: 100%;
 	margin: auto;
+}
+.img-show {
+	margin-bottom: 48px;
 }
 
 object {
@@ -456,198 +448,165 @@ header {
 		width: auto;
 	}
 }
-.ul-episodes {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	li {
-		margin: 0;
-		padding: 0;
-		display: inline-block;
-	}
-	a {
-		margin: 4px;
-		padding: 6px 10px;
-		font-size: 1.2em;
-		background: #fff;
+
+.div-season {
+	margin: 24px 0 32px 0;
+	.span-season {
+		display: block;
+		padding: 4px 8px;
+		margin-bottom: 6px;
 		color: @black;
-		.border-radius(3px);
-		display: inline-block;
-		min-width: 30px;
-		text-align: center;
+		font-size: 1.8em;
+		border-bottom: 4px solid @blue;
+		transition: background 0.3s, color 0.3s;
+	}
+	.a-show {
 		&:hover {
 			text-decoration: none;
-			background: darken(#fff, 10%);
-		}
-		&.released {
-			background: @blue;
+			background: lighten(@blue, 10%);
 			color: #fff;
-			&:hover {
-				background: lighten(@blue, 10%);
-			}
 		}
-		&.watched {
-			background: @green;
-			color: #fff;
-			&:hover {
-				background: lighten(@green, 10%);
-			}
+	}
+	.a-season {
+		float: right;
+		display: inline-block;
+		font-size: 0.8em;
+		color: #aaa;
+		vertical-align: top;
+		margin: 3px 0 0 12px;
+		&:hover {
+			text-decoration: none;
+			color: #444;
 		}
 	}
 }
 .div-episode {
-	margin: 12px 0 0 0;
-	padding: 12px;
-	.border-radius(3px);
-	display: none;
-	background: #fff;
-	.span-desc {
-		display: block;
-	}
-	.span-date, .span-no {
-		display: inline-block;
-		padding: 4px 8px;
-		margin: 0 0 12px 0;
-		background: @background;
-		color: @black;
-		.border-radius(3px);
-	}
-	.span-no {
-		margin-right: 12px;
-		font-size: 1.4em;
-		font-weight: bold;
-	}
-	.span-name {
-		margin-right: 12px;
-	}
-	&.released {
-		background: @blue;
-		color: #fff;
-	}
-	&.watched {
-		background: @green;
-		color: #fff;
-	}
-}
-.div-season {
-	.div-e {
-		position: relative;
-		display: inline-block;
-		&::before {
-			position: fixed;
-			top: 0;
-			left: 0;
-			z-index: 800;
-			width: 100%;
-			height: 100%;
-			background: rgba(0,0,0,0.5);
-			content: '';
-			opacity: 0;
-			transition: opacity 0.5s;
-			pointer-events: none;
-		}
-		.span-no {
-			transition: opacity 0.1s 0.4s;
-		}
-		.div-desc {
-			width: 600px;
-			height: 200px;
-			position: fixed;
-			top: 50%;
-			left: 50%;
-			z-index: 900;
-			opacity: 0;
-			transition: opacity 0.1s 0.4s, top 0.3s 0.1s, left 0.3s 0.1s, width 0.3s 0.1s, height 0.3s 0.1s, margin 0.3s 0.1s;
-			pointer-events: none;
-			background: #fff;
-			.border-radius(3px);
-			> div {
-				opacity: 0;
-				transition: opacity 0.1s 0s;
-			}
-			.span-name {
-				margin: 0;
-				padding: 6px;
-				.border-radius(3px 3px 0 0);
-				&:hover {
-					background: @blue;
-				}
-			}
-			.div-subtitles {
-				margin: 16px 0;
-				padding: 0 16px;
-				max-height: 130px;
-				overflow-y: auto;
-				font-size: 0.9em;
-				.span-language {
-					font-size: 1.1em;
-				}
-			}
-			.div-subtitle:first-child {
-				margin-bottom: 16px;
-			}
-		}
-		&.open {
-			&::before {
-				opacity: 1;
-				pointer-events: auto;
-			}
-			.span-no {
-				pointer-events: none;
-				opacity: 0;
-				transition: opacity 0.1s 0s;
-			}
-			.div-desc {
-				margin-top: -100px;
-				margin-left: -300px;
-				opacity: 1;
-				pointer-events: auto;
-				transition: opacity 0.1s, top 0.3s 0.1s, left 0.3s 0.1s, width 0.3s 0.1s, height 0.3s 0.1s, margin 0.3s 0.1s;
-				> div {
-					opacity: 1;
-					transition: opacity 0.1s 0.4s;
-				}
-			}
-		}
-		.span-close, .span-watched {
-			display: block;
-			float: right;
-			margin-left: 12px;
-			padding: 0 6px;
-			cursor: pointer;
-			transition: background 0.1s, color 0.1s;
-			.border-radius(2px);
-			&:hover {
-				background: #fff;
-				color: @blue;
-			}
-		}
-		.span-watched {
-			float: left;
-			margin-left: 0;
-			margin-right: 12px;
-		}
-	}
-	.span-name {
-		display: block;
-		padding: 4px 8px;
-		margin: 32px 0 12px 0;
-		background: @blue;
-		color: #fff;
-		.border-radius(3px);
-		font-size: 1.4em;
-		font-weight: bold;
-		&:hover {
-			text-decoration: none;
-			background: lighten(@blue, 10%);
-		}
-	}
-	.span-no {
+	position: relative;
+	display: inline-block;
+	.a-no {
 		display: inline-block;
 		padding: 4px 8px;
 		margin: 6px;
+		background: @background;
+		color: @black;
+		transition: background 0.3s;
+		&:hover {
+			text-decoration: none;
+			background: #fff;
+		}
+	}
+	.div-desc {
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 801;
+		width: 100%;
+		height: 100%;
+		display: table;
+		opacity: 0;
+		transition: opacity 0.8s;
+		pointer-events: none;
+	}
+	&::before {
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 800;
+		width: 100%;
+		height: 100%;
+		background: rgba(0,0,0,0.5);
+		content: '';
+		opacity: 0;
+		transition: opacity 0.8s;
+		pointer-events: none;
+	}
+	&.open {
+		&::before { opacity: 0.5; }
+		.div-desc {
+			opacity: 1;
+			pointer-events: auto;
+		}
+	}
+}
+.div-popup {
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+}
+.div-popup-inner {
+	display: inline-block;
+	text-align: left;
+	width: 600px;
+}
+.div-popup-title {
+	background: lighten(@blue, 10%);
+	padding: 6px;
+	color: #fff;
+	font-size: 1.8em;
+	.span-no {
+		padding: 6px 12px;
+		margin: 0 18px 0 6px;
 		background: #fff;
-		.border-radius(3px);
+		color: @black;
+		&.watched {
+			color: #fff;
+			background: @green;
+		}
+		&.released {
+			color: #fff;
+			background: @blue;
+		}
+	}
+	.span-name {
+		font-size: 0.8em;
+	}
+	.a-watched, .a-close {
+		display: inline-block;
+		padding: 0 12px;
+		transition: background 0.3s, color 0.3s;
+		color: #fff;
+		&:hover {
+			background: #fff;
+			color: @blue;
+			text-decoration: none;
+		}
+	}
+	.a-close {
+		float: right;
+		margin-left: 12px;
+	}
+}
+.div-popup-main {
+	clear: both;
+	background: @background;
+	padding: 6px;
+	max-height: 500px;
+	overflow-x: auto;
+	.div-subtitles {
+		.div-subtitle {
+			margin-top: 6px;
+		}
+		.span-sigles {
+			font-size: 0.6em;
+			display: inline-block;
+			background: #fff;
+			padding: 2px 4px;
+			margin: 0 0 0 6px;
+		}
+	}
+	.div-infos {
+		.span-desc { display: none; }
+		&.more {
+			.a-more { display: none; }
+			.span-desc { display: inline; }
+		}
+	}
+	.div-title {
+		margin: 24px 0 12px 12px;
+		font-size: 1.4em;
+	}
+	.div-title:first-child {
+		margin-top: 6px;
 	}
 }
 .div-days {
@@ -666,4 +625,33 @@ header {
 
 .no-transition {
 	transition: none !important;
+}
+
+.spinner {
+	display: block;
+	margin: auto;
+	width: 24px;
+	height: 24px;
+	background-color: lighten(@blue, 10%);
+	-webkit-animation: rotateplane 1.2s infinite ease-in-out;
+	animation: rotateplane 1.2s infinite ease-in-out;
+}
+@-webkit-keyframes rotateplane {
+	0% { -webkit-transform: perspective(120px) }
+	50% { -webkit-transform: perspective(120px) rotateY(180deg) }
+	100% { -webkit-transform: perspective(120px) rotateY(180deg) rotateX(180deg) }
+}
+@keyframes rotateplane {
+	0% { 
+		transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+		-webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+	}
+	50% { 
+		transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+		-webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+	}
+	100% { 
+		transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+		-webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+	}
 }

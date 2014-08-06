@@ -53,17 +53,6 @@ h1 span {
 h2 {
   font-size: 2em;
 }
-h2 a {
-  display: inline-block;
-  font-size: 0.8em;
-  color: #aaa;
-  vertical-align: top;
-  margin: 3px 0 0 12px;
-}
-h2 a:hover {
-  text-decoration: none;
-  color: #444;
-}
 p {
   margin: 0;
   padding: 0;
@@ -90,6 +79,9 @@ img {
   display: block;
   max-width: 100%;
   margin: auto;
+}
+.img-show {
+  margin-bottom: 48px;
 }
 object {
   display: block;
@@ -442,91 +434,64 @@ header a.selected {
   display: inline-block;
   width: auto;
 }
-.ul-episodes {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.div-season {
+  margin: 24px 0 32px 0;
 }
-.ul-episodes li {
-  margin: 0;
-  padding: 0;
-  display: inline-block;
-}
-.ul-episodes a {
-  margin: 4px;
-  padding: 6px 10px;
-  font-size: 1.2em;
-  background: #fff;
+.div-season .span-season {
+  display: block;
+  padding: 4px 8px;
+  margin-bottom: 6px;
   color: #444444;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  display: inline-block;
-  min-width: 30px;
-  text-align: center;
+  font-size: 1.8em;
+  border-bottom: 4px solid #0099cc;
+  transition: background 0.3s, color 0.3s;
 }
-.ul-episodes a:hover {
+.div-season .a-show:hover {
   text-decoration: none;
-  background: #e6e6e6;
-}
-.ul-episodes a.released {
-  background: #0099cc;
-  color: #fff;
-}
-.ul-episodes a.released:hover {
   background: #00bfff;
-}
-.ul-episodes a.watched {
-  background: #31bc86;
   color: #fff;
 }
-.ul-episodes a.watched:hover {
-  background: #4fd19f;
+.div-season .a-season {
+  float: right;
+  display: inline-block;
+  font-size: 0.8em;
+  color: #aaa;
+  vertical-align: top;
+  margin: 3px 0 0 12px;
+}
+.div-season .a-season:hover {
+  text-decoration: none;
+  color: #444;
 }
 .div-episode {
-  margin: 12px 0 0 0;
-  padding: 12px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  display: none;
-  background: #fff;
-}
-.div-episode .span-desc {
-  display: block;
-}
-.div-episode .span-date,
-.div-episode .span-no {
-  display: inline-block;
-  padding: 4px 8px;
-  margin: 0 0 12px 0;
-  background: #eeeeee;
-  color: #444444;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-}
-.div-episode .span-no {
-  margin-right: 12px;
-  font-size: 1.4em;
-  font-weight: bold;
-}
-.div-episode .span-name {
-  margin-right: 12px;
-}
-.div-episode.released {
-  background: #0099cc;
-  color: #fff;
-}
-.div-episode.watched {
-  background: #31bc86;
-  color: #fff;
-}
-.div-season .div-e {
   position: relative;
   display: inline-block;
 }
-.div-season .div-e::before {
+.div-episode .a-no {
+  display: inline-block;
+  padding: 4px 8px;
+  margin: 6px;
+  background: #eeeeee;
+  color: #444444;
+  transition: background 0.3s;
+}
+.div-episode .a-no:hover {
+  text-decoration: none;
+  background: #fff;
+}
+.div-episode .div-desc {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 801;
+  width: 100%;
+  height: 100%;
+  display: table;
+  opacity: 0;
+  transition: opacity 0.8s;
+  pointer-events: none;
+}
+.div-episode::before {
   position: fixed;
   top: 0;
   left: 0;
@@ -536,120 +501,98 @@ header a.selected {
   background: rgba(0, 0, 0, 0.5);
   content: '';
   opacity: 0;
-  transition: opacity 0.5s;
+  transition: opacity 0.8s;
   pointer-events: none;
 }
-.div-season .div-e .span-no {
-  transition: opacity 0.1s 0.4s;
+.div-episode.open::before {
+  opacity: 0.5;
 }
-.div-season .div-e .div-desc {
+.div-episode.open .div-desc {
+  opacity: 1;
+  pointer-events: auto;
+}
+.div-popup {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+.div-popup-inner {
+  display: inline-block;
+  text-align: left;
   width: 600px;
-  height: 200px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  z-index: 900;
-  opacity: 0;
-  transition: opacity 0.1s 0.4s, top 0.3s 0.1s, left 0.3s 0.1s, width 0.3s 0.1s, height 0.3s 0.1s, margin 0.3s 0.1s;
-  pointer-events: none;
-  background: #fff;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
 }
-.div-season .div-e .div-desc > div {
-  opacity: 0;
-  transition: opacity 0.1s 0s;
-}
-.div-season .div-e .div-desc .span-name {
-  margin: 0;
+.div-popup-title {
+  background: #00bfff;
   padding: 6px;
-  -webkit-border-radius: 3px 3px 0 0;
-  -moz-border-radius: 3px 3px 0 0;
-  border-radius: 3px 3px 0 0;
+  color: #fff;
+  font-size: 1.8em;
 }
-.div-season .div-e .div-desc .span-name:hover {
+.div-popup-title .span-no {
+  padding: 6px 12px;
+  margin: 0 18px 0 6px;
+  background: #fff;
+  color: #444444;
+}
+.div-popup-title .span-no.watched {
+  color: #fff;
+  background: #31bc86;
+}
+.div-popup-title .span-no.released {
+  color: #fff;
   background: #0099cc;
 }
-.div-season .div-e .div-desc .div-subtitles {
-  margin: 16px 0;
-  padding: 0 16px;
-  max-height: 130px;
-  overflow-y: auto;
-  font-size: 0.9em;
+.div-popup-title .span-name {
+  font-size: 0.8em;
 }
-.div-season .div-e .div-desc .div-subtitles .span-language {
-  font-size: 1.1em;
+.div-popup-title .a-watched,
+.div-popup-title .a-close {
+  display: inline-block;
+  padding: 0 12px;
+  transition: background 0.3s, color 0.3s;
+  color: #fff;
 }
-.div-season .div-e .div-desc .div-subtitle:first-child {
-  margin-bottom: 16px;
-}
-.div-season .div-e.open::before {
-  opacity: 1;
-  pointer-events: auto;
-}
-.div-season .div-e.open .span-no {
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.1s 0s;
-}
-.div-season .div-e.open .div-desc {
-  margin-top: -100px;
-  margin-left: -300px;
-  opacity: 1;
-  pointer-events: auto;
-  transition: opacity 0.1s, top 0.3s 0.1s, left 0.3s 0.1s, width 0.3s 0.1s, height 0.3s 0.1s, margin 0.3s 0.1s;
-}
-.div-season .div-e.open .div-desc > div {
-  opacity: 1;
-  transition: opacity 0.1s 0.4s;
-}
-.div-season .div-e .span-close,
-.div-season .div-e .span-watched {
-  display: block;
-  float: right;
-  margin-left: 12px;
-  padding: 0 6px;
-  cursor: pointer;
-  transition: background 0.1s, color 0.1s;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-}
-.div-season .div-e .span-close:hover,
-.div-season .div-e .span-watched:hover {
+.div-popup-title .a-watched:hover,
+.div-popup-title .a-close:hover {
   background: #fff;
   color: #0099cc;
-}
-.div-season .div-e .span-watched {
-  float: left;
-  margin-left: 0;
-  margin-right: 12px;
-}
-.div-season .span-name {
-  display: block;
-  padding: 4px 8px;
-  margin: 32px 0 12px 0;
-  background: #0099cc;
-  color: #fff;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  font-size: 1.4em;
-  font-weight: bold;
-}
-.div-season .span-name:hover {
   text-decoration: none;
-  background: #00bfff;
 }
-.div-season .span-no {
+.div-popup-title .a-close {
+  float: right;
+  margin-left: 12px;
+}
+.div-popup-main {
+  clear: both;
+  background: #eeeeee;
+  padding: 6px;
+  max-height: 500px;
+  overflow-x: auto;
+}
+.div-popup-main .div-subtitles .div-subtitle {
+  margin-top: 6px;
+}
+.div-popup-main .div-subtitles .span-sigles {
+  font-size: 0.6em;
   display: inline-block;
-  padding: 4px 8px;
-  margin: 6px;
   background: #fff;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
+  padding: 2px 4px;
+  margin: 0 0 0 6px;
+}
+.div-popup-main .div-infos .span-desc {
+  display: none;
+}
+.div-popup-main .div-infos.more .a-more {
+  display: none;
+}
+.div-popup-main .div-infos.more .span-desc {
+  display: inline;
+}
+.div-popup-main .div-title {
+  margin: 24px 0 12px 12px;
+  font-size: 1.4em;
+}
+.div-popup-main .div-title:first-child {
+  margin-top: 6px;
 }
 .div-days .span-day {
   display: block;
@@ -666,4 +609,38 @@ header a.selected {
 }
 .no-transition {
   transition: none !important;
+}
+.spinner {
+  display: block;
+  margin: auto;
+  width: 24px;
+  height: 24px;
+  background-color: #00bfff;
+  -webkit-animation: rotateplane 1.2s infinite ease-in-out;
+  animation: rotateplane 1.2s infinite ease-in-out;
+}
+@-webkit-keyframes rotateplane {
+  0% {
+    -webkit-transform: perspective(120px);
+  }
+  50% {
+    -webkit-transform: perspective(120px) rotateY(180deg);
+  }
+  100% {
+    -webkit-transform: perspective(120px) rotateY(180deg) rotateX(180deg);
+  }
+}
+@keyframes rotateplane {
+  0% {
+    transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+  }
+  100% {
+    transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+    -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+  }
 }

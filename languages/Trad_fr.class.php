@@ -21,6 +21,9 @@ class Trad {
 	const W_YEAR_P = 'années';
 	const W_DECADE_P = 'décennies';
 	const W_BACK = 'Retour';
+	const W_DATE = 'Date : ';
+	const W_DESC = 'Synopsis : ';
+	const W_MORE = 'lire…';
 
 	const W_SEASON_NB = 'Saison %nb%';
 
@@ -72,6 +75,9 @@ class Trad {
 	const T_DATA = 'Données';
 	const T_SOON = 'Bientôt…';
 	const T_ADDIC7ED = 'Addic7ed';
+	const T_TORRENT = 'Torrent';
+	const T_SUBTITLES = 'Sous-titres';
+	const T_INFOS = 'Infos';
 
 		# Alertes
 

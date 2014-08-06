@@ -58,9 +58,11 @@ class Manager {
 					if (!$e['watched'] && !empty($e['date'])) {
 						if ($e['date'] < $date) {
 							$eps[] = array(
-								'id' => $id,
 								'no' => Manager::no($snb, $enb),
-								'name' => $e['name']
+								'name' => $e['name'],
+								'date' => $e['date'],
+								'desc' => $e['desc'],
+								'watched' => $e['watched']
 							);
 						}
 						else {
@@ -83,6 +85,7 @@ class Manager {
 				$episodes[] = array(
 					'id' => $id,
 					'name' => $sh['name'],
+					'addic7ed' => $sh['addic7ed'],
 					'episodes' => $eps
 				);
 			}
@@ -296,45 +299,85 @@ class Manager {
 		);
 	}
 
-	public static function display_season($id, $snb, $s) {
-		$date = date('Y-m-d');
-		$content = '<h2>'.str_replace('%nb%', $snb, Trad::W_SEASON_NB)
-			.'<a href="#" class="a-season" data-s="'
-			.$snb.'" data-id="'.$id.'">¶</a></h2>';
-		$list = '<ul class="ul-episodes">';
-		$episodes = '';
+	public static function display_season($id, $snb, $s, $showname, $addic7ed) {
+		$content = '<div class="div-season">'
+			.'<span class="span-season">'.
+				str_replace('%nb%', $snb, Trad::W_SEASON_NB)
+				.'<a href="#" class="a-season" data-s="'
+					.$snb.'" data-id="'.$id.'">¶</a>'
+			.'</span>';
 		foreach ($s as $enb => $e) {
 			$no = Manager::no($snb, $enb);
-			$class = '';
-			if ($e['watched']) {
-				$class = 'watched';
-			}
-			elseif ($e['date'] < $date && !empty($e['date'])) {
-				$class = 'released';
-			}
-			$list .= '<li><a href="#" class="'.$class.'" data-no="'.$no
-				.'" id="a'.$no.'">'.$enb.'</a></li>';
-			$episodes .= '<div class="div-episode '.$class.'" id="'.$no.'">'
-				.'<a class="span-no" href="#" data-no="'
-					.$no.'" data-id="'.$id.'">'.$no.'</a>'
-				.'<span class="span-name">'.$e['name'].'</span>'
-				.'<span class="span-date">'.$e['date'].'</span>'
-				.'<span class="span-desc">'.$e['desc'].'</span></div>';
+			$content .= self::display_episode($e, $no, $id, $showname, $addic7ed);
 		}
-		$list .= '</ul>';
-		$content .= $list;
-		$content .= $episodes;
-		return $content;
+		return $content.'</div>';
+	}
+
+	public static function display_episode($e, $no, $showid, $showname, $addic7ed) {
+		$date = date('Y-m-d');
+		$class = '';
+		if ($e['watched']) {
+			$class = 'watched';
+		}
+		elseif ($e['date'] < $date && !empty($e['date'])) {
+			$class = 'released';
+		}
+		$subtitles = ($addic7ed) ?
+			'<div class="div-title">'.Trad::T_SUBTITLES.'</div>'
+			.'<div class="div-subtitles"><span class="spinner"></span></div>':
+			'';
+		return  '<div class="div-episode">'
+			.'<a class="a-no" data-id="'.$showid.'" href="#">'
+				.$no
+			.'</a>'
+			.'<div class="div-desc">'
+				.'<div class="div-popup"><div class="div-popup-inner">'
+					.'<div class="div-popup-title">'
+						.'<a class="a-close" href="#">×</a>'
+						.'<a class="a-watched" href="#">¶</a>'
+						.'<span class="span-no '.$class.'">'.$no.'</span>'
+						.'<span class="span-name">'.$e['name'].'</span>'
+						
+					.'</div>'
+					.'<div class="div-popup-main">'
+						.'<div class="div-title">'.Trad::T_INFOS.'</div>'
+						.'<div class="div-infos">'
+							.Trad::W_DATE
+								.'<span class="span-date">'.$e['date'].'</span>'
+							.'<br />'
+							.Trad::W_DESC
+								.'<a class="a-more" href="#">'.Trad::W_MORE.'</a>'
+								.'<span class="span-desc">'.$e['desc'].'</span>'
+						.'</div>'
+						.'<div class="div-title">'.Trad::T_TORRENT.'</div>'
+						.'<div class="div-torrent">'
+							.'<a href="http://thepiratebay.se/s/?'
+								.http_build_query(array(
+									'q' => $showname.' '.$no
+								)).'">TBP</a>'
+							.'&nbsp;&nbsp;•&nbsp;&nbsp;'
+							.'<a href="http://thepiratebay.se/s/?'
+								.http_build_query(array(
+									'q' => $showname.' '.$no.' 720p'
+								)).'">TBP 720p</a>'
+						.'</div>'
+						.$subtitles
+					.'</div>'
+				.'</div></div>'
+			.'</div>'
+			.'</div>';
 	}
 
 	public static function display_subtitles($subtitles) {
 		$arr = array();
 		foreach ($subtitles as $s) {
 			$sigles = $s['sigles'];
-			if (!empty($sigles)) { $sigles = ' ('.$sigles.')'; }
+			if (!empty($sigles)) {
+				$sigles = '<span class="span-sigles">'.$sigles.'</span>';
+			}
 			$arr[] = '<a href="'.$s['url'].'">'.$s['version'].'</a>'.$sigles;
 		}
-		return implode(' – ', $arr);
+		return implode('&nbsp;&nbsp;•&nbsp;&nbsp;', $arr);
 	}
 
 }

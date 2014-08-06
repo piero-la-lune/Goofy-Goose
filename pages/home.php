@@ -6,22 +6,10 @@
 	$html_e = '';
 	foreach ($episodes as $s) {
 		$html_e .= '<div class="div-season">'
-			.'<a class="span-name" href="'.Url::parse('show/'.$s['id']).'">'
+			.'<a class="a-show span-season" href="'.Url::parse('show/'.$s['id']).'">'
 			.$s['name'].'</a>';
 		foreach ($s['episodes'] as $e) {
-			$html_e .= '<div class="div-e">'
-				.'<span class="span-no" data-id="'.$e['id'].'">'.$e['no'].'</span>'
-				.'<div class="div-desc"><div>'
-					.'<span class="span-name">'
-						.$e['no']
-						.'&nbsp;&nbsp;-&nbsp;&nbsp;'
-						.$e['name']
-						.'<span class="span-close">×</span>'
-						.'<span class="span-watched">¶</span>'
-					.'</span>'
-					.'<div class="div-subtitles">…</div>'
-				.'</div></div>'
-				.'</div>';
+			$html_e .= Manager::display_episode($e, $e['no'], $s['id'], $s['name'], $s['addic7ed']);
 		}
 		$html_e .= '</div>';
 	}

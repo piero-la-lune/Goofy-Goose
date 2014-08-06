@@ -77,49 +77,6 @@ if (isset(document.getElementById('back'))) {
 	};
 }
 
-
-function desc_episode(e) {
-	var div_episode = document.querySelectorAll('.div-episode');
-	for (var j = div_episode.length - 1; j >= 0; j--) {
-		div_episode[j].style.display = 'none';
-	}
-	document.getElementById(e.target.dataset.no).style.display = 'block';
-	return false;
-}
-var a_episode = document.querySelectorAll('.ul-episodes a');
-for (var i = a_episode.length - 1; i >= 0; i--) {
-	a_episode[i].onclick = desc_episode;
-}
-function episode_watched(e) {
-	var src = e.target;
-	var no = src.dataset.no;
-	var ajax = new Ajax(undefined, 'watched');
-	ajax.addParam('id', src.dataset.id);
-	ajax.addParam('no', no);
-	ajax.send(function(ans) {
-		var a = document.getElementById('a'+no);
-		var div = document.getElementById(no);
-		var cl = 'watched';
-		if (a.className == 'watched') {
-			var span_date = div.querySelector('.span-date').textContent;
-			var date = new Date();
-			var str_date = date.getFullYear()+'-'+('0'+(date.getMonth()+1)).slice(-2)+'-'+('0' + date.getDate()).slice(-2);
-			if (span_date < str_date && span_date !== '') {
-				cl = 'released';
-			}
-			else {
-				cl = '';
-			}
-		}
-		a.className = cl;
-		div.className = 'div-episode '+cl;
-	});
-	return false;
-}
-a_episode = document.querySelectorAll('.div-episode a');
-for (var i = a_episode.length - 1; i >= 0; i--) {
-	a_episode[i].onclick = episode_watched;
-}
 function season_watched(e) {
 	var src = e.target;
 	var snb = src.dataset.s;
@@ -129,56 +86,81 @@ function season_watched(e) {
 	ajax.send(function(ans) {
 		document.location.reload();
 	});
+	return false;
 }
 var a_season = document.querySelectorAll('.a-season');
 for (var i = a_season.length - 1; i >= 0; i--) {
 	a_season[i].onclick = season_watched;
 }
 
-a_episode = document.querySelectorAll('.div-season .span-no');
-function episode_popup(e) {
+function episode_watched(e) {
+	var src = e.target;
+	var p = src.parentNode.parentNode.parentNode.parentNode.parentNode;
+	var a_no = p.querySelector('.a-no');
+	var span_no = p.querySelector('.span-no');
+	var ajax = new Ajax(undefined, 'watched');
+	ajax.addParam('id', a_no.dataset.id);
+	ajax.addParam('no', a_no.textContent);
+	ajax.send(function(ans) {
+		if (span_no.classList.contains('watched')) {
+			var span_date = p.querySelector('.span-date').textContent;
+			var date = new Date();
+			var str_date = date.getFullYear()+'-'+('0'+(date.getMonth()+1)).slice(-2)+'-'+('0' + date.getDate()).slice(-2);
+			if (span_date < str_date && span_date !== '') {
+				span_no.classList.add('released');
+			}
+			span_no.classList.remove('watched');
+		}
+		else {
+			span_no.classList.remove('released');
+			span_no.classList.add('watched');
+			if (page == 'home') {
+				p.parentNode.removeChild(p);
+			}
+		}
+	});
+	return false;
+}
+a_watched = document.querySelectorAll('.div-episode .a-watched');
+for (var i = a_watched.length - 1; i >= 0; i--) {
+	a_watched[i].onclick = episode_watched;
+}
+
+function open_popup(e) {
 	var src = e.target;
 	var p = src.parentNode;
-	var w = p.querySelector('.div-desc');
-	var pos = src.getBoundingClientRect();
-	// Ajax
+	// Retrieve subtitles
 	var ajax = new Ajax(undefined, 'subtitles');
 	ajax.addParam('id', src.dataset.id);
 	ajax.addParam('no', src.textContent);
 	ajax.send(function(ans) {
-		w.querySelector('.div-subtitles').innerHTML = ans.ans;
+		p.querySelector('.div-subtitles').innerHTML = ans.ans;
 	});
-	// Display
-	w.classList.add('no-transition');
-	w.style.width = pos.width+'px';
-	w.style.height = pos.height+'px';
-	w.style.top = pos.top+'px';
-	w.style.left = pos.left+'px';
-	setTimeout(function() {
-		w.classList.remove('no-transition');
-		w.style.removeProperty('width');
-		w.style.removeProperty('height');
-		w.style.removeProperty('top');
-		w.style.removeProperty('left');
-		p.classList.add('open');
-	}, 25);
-	p.querySelector('.span-close').onclick = function() {
-		var pos = src.getBoundingClientRect();
-		w.style.width = pos.width+'px';
-		w.style.height = pos.height+'px';
-		w.style.top = pos.top+'px';
-		w.style.left = pos.left+'px';
-		p.classList.remove('open');
-	};
-	p.querySelector('.span-watched').onclick = function() {
-		var ajax = new Ajax(undefined, 'watched');
-		ajax.addParam('id', src.dataset.id);
-		ajax.addParam('no', src.textContent);
-		ajax.send(function(ans) {
-			p.parentNode.removeChild(p);
-		});
-	};
+	// Open popup
+	p.classList.add('open');
+	return false;
 }
+var a_episode = document.querySelectorAll('.div-episode .a-no');
 for (var i = a_episode.length - 1; i >= 0; i--) {
-	a_episode[i].onclick = episode_popup;
+	a_episode[i].onclick = open_popup;
+}
+
+function close_popup(e) {
+	var src = e.target;
+	src.parentNode.parentNode.parentNode.parentNode.parentNode.classList.remove('open');
+	return false;
+}
+var a_close = document.querySelectorAll('.a-close');
+for (var i = a_close.length - 1; i >= 0; i--) {
+	a_close[i].onclick = close_popup;
+}
+
+function more(e) {
+	var src = e.target;
+	src.parentNode.classList.add('more');
+	return false;
+}
+var a_more = document.querySelectorAll('.a-more');
+for (var i = a_more.length - 1; i >= 0; i--) {
+	a_more[i].onclick = more;
 }
