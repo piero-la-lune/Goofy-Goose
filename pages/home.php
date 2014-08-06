@@ -13,6 +13,8 @@
 				.'<span class="span-no" data-id="'.$e['id'].'">'.$e['no'].'</span>'
 				.'<div class="div-desc"><div>'
 					.'<span class="span-name">'
+						.$e['no']
+						.'&nbsp;&nbsp;-&nbsp;&nbsp;'
 						.$e['name']
 						.'<span class="span-close">×</span>'
 						.'<span class="span-watched">¶</span>'
