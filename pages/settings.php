@@ -56,6 +56,9 @@
 	<select id="language" name="language">
 		'.Text::options($languages, $config['language']).'
 	</select></p>
+	<p><label for="torrent_dir">'.Trad::F_TORRENT_DIR.'</label>
+	<input type="text" name="torrent_dir" id="torrent_dir" value="'
+		.Text::chars($config['torrent_dir']).'" /></p>
 
 	<p class="p-submit"><input type="submit" value="'.Trad::V_SAVE.'" /></p>
 	<input type="hidden" name="action" value="edit" />
@@ -64,6 +67,10 @@
 
 <p>&nbsp;</p>
 
+	';
+
+/*
+'
 <form action="'.Url::parse('settings').'" method="post">
 	
 	<h2>'.Trad::T_USER_SETTINGS.'</h2>
@@ -79,18 +86,8 @@
 	<p class="p-submit"><input type="submit" value="'.Trad::V_SAVE.'" /></p>
 	<input type="hidden" name="action" value="edit" />
 </form>
-
-
-<form action="'.Url::parse('settings').'" method="post">
-
-	<h2>'.Trad::T_DATA.'</h2>
-	<textarea name="data" id="data">'.Text::chars($data).'</textarea></p>
-
-	<p class="p-submit"><input type="submit" value="'.Trad::V_SAVE.'" /></p>
-	<input type="hidden" name="action" value="editdata" />
-
-</form>
 	';
+*/
 
 
 ?>

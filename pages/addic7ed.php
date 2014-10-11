@@ -2,7 +2,7 @@
 
 if (isset($_GET['url']) && isset($_GET['show']) && isset($_GET['episode']) && isset($_GET['lang'])) {
 	
-	$show = str_replace(' ', '.', ucwords(str_replace('-', ' ', Text::purge($_GET['show']))));
+	$show = Manager::get_show_name($_GET['show']);
 	$language = ($_GET['lang'] == 'en') ? 'en' : 'fr';
 	list($snb, $enb) = Manager::no_inv($_GET['episode']);
 	$name = $show.'-'.Manager::no($snb, $enb).'-'.$language.'.srt';

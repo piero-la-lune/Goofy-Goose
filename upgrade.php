@@ -27,6 +27,34 @@ if (strict_lower($config['version'], '0.3')) {
 
 }
 
+if (strict_lower($config['version'], '1.1')) {
+
+	$shows = Text::unhash(get_file(FILE_SHOWS));
+	foreach ($shows as $k => $s) {
+		$shows[$k]['download'] = false;
+	}
+	update_file(FILE_SHOWS, Text::hash($shows));
+
+	$shows = Text::unhash(get_file(FILE_SHOWS));
+	$date = date('Y-m-d');
+	foreach ($shows as $k => $sh) {
+		foreach ($sh['seasons'] as $snb => $s) {
+			foreach ($s as $enb => $e) {
+				$shows[$k]['seasons'][$snb][$enb]['downloaded'] = 
+					(empty($e['date']) || $e['date'] >= $date) ? false : true;
+			}
+		}
+		$shows[$k]['download'] = false;
+	}
+	update_file(FILE_SHOWS, Text::hash($shows));
+
+	$config['torrent_dir'] = DIR_DATABASE;
+	$config['cron_last_update'] = time();
+	$config['cron_last_download'] = time();
+
+}
+
+
 $settings = new Settings();
 if ($config['url_rewriting']) { $settings->url_rewriting(); }
 $settings->save();

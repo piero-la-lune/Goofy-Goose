@@ -5,6 +5,8 @@
 #	network => escaped (string)
 #	banner => encoded (string)
 #	seasons => array()
+#	addic7ed => (int)
+#	download => (boolean)
 
 class Manager {
 
@@ -94,6 +96,62 @@ class Manager {
 		return array($episodes, $soon);
 	}
 
+	public function getDownloads() {
+		$date = date('Y-m-d');
+		$downloads = array();
+		foreach ($this->shows as $k => $sh) {
+			if (!$sh['download']) { continue; }
+			foreach ($sh['seasons'] as $snb => $s) {
+				foreach ($s as $enb => $e) {
+					if ($e['downloaded'] || empty($e['date'])
+						|| $e['date'] >= $date) {
+						continue;
+					}
+					$no = Manager::no($snb, $enb);
+					$dom = new DOMDocument();
+					libxml_use_internal_errors(true);
+					$dom->loadHTMLFile('http://thepiratebay.se/s/?'
+						.http_build_query(array('q' => $sh['name'].' '.$no.' 720p'))
+					);
+					libxml_clear_errors();
+					$table = $dom->getElementById('searchResult');
+					$table = explode("<tr>", $dom->saveHTML($table));
+					$idTPB = false;
+					$seedsTPB = 9;
+					for ($i=1; $i < count($table); $i++) { 
+						$t = explode("\n", $table[$i]);
+						$seeds = preg_replace('#(.*)>(.*)<(.*)#', '$2',
+							array_shift(preg_grep('#align="right"#', $t)));
+						if ($seeds > $seedsTPB) {
+							$seedsTPB = $seeds;
+							$idTPB = preg_replace('#(.*)torrent/([0-9]+)/(.*)#', '$2',
+							array_shift(preg_grep('#detLink#', $t)));
+						}
+					}
+					if ($idTPB) {
+						$downloads[] = array(
+							'id' => $idTPB,
+							'name' => self::get_show_name($sh['name']).'-'.$no.'.torrent',
+							'showid' => $k,
+							'no' => $no
+						);
+					}
+				}
+			}
+		}
+		return $downloads;
+	}
+
+	public function setDownloaded($id, $no) {
+		if (!isset($this->shows[$id])) { return false; }
+		list($snb, $enb) = self::no_inv($no);
+		if (!isset($this->shows[$id]['seasons'][$snb])) { return false; }
+		if (!isset($this->shows[$id]['seasons'][$snb][$enb])) { return false; }
+		$this->shows[$id]['seasons'][$snb][$enb]['downloaded'] = true;
+		$this->save();
+		return true;
+	}
+
 	public function search($post) {
 		if (!isset($post['showname']) || empty($post['showname'])) {
 			return false;
@@ -123,7 +181,9 @@ class Manager {
 			return Trad::A_ERROR_ADD;
 		}
 		$dom = new DOMDocument();
-		$dom->load($url);
+		if (!$dom->load($url)) {
+			return Trad::A_ERROR_NETWORK;
+		}
 		$show = $dom->getElementsByTagName('Series')->item(0);
 		$name = $dom->getElementsByTagName('SeriesName')->item(0)->nodeValue;
 		$network = $dom->getElementsByTagName('Network')->item(0)->nodeValue;
@@ -136,6 +196,7 @@ class Manager {
 				'banner' => 'http://thetvdb.com/banners/'.Text::chars($banner),
 				'network' => Text::chars($network),
 				'addic7ed' => false,
+				'download' => false,
 				'seasons' => array()
 			);
 		}
@@ -156,7 +217,8 @@ class Manager {
 					'date' => $date,
 					'name' => Text::chars($ename),
 					'desc' => Text::chars($desc),
-					'watched' => false
+					'watched' => false,
+					'downloaded' => false
 				);
 			}
 			else {
@@ -170,19 +232,32 @@ class Manager {
 		return true;
 	}
 
-	public function update_addic7ed($id, $post) {
-		if (!isset($this->shows[$id]) || !isset($post['addic7ed'])) {
+	public function update($id, $post) {
+		if (!isset($this->shows[$id])
+			|| !isset($post['addic7ed'])
+			|| !isset($post['name'])
+			|| !isset($post['download'])
+		) {
 			return false;
 		}
 		if (empty($post['addic7ed'])) { 
 			$this->shows[$id]['addic7ed'] = false;
 		}
 		else {
-			$headers = get_headers('http://www.addic7ed.com/show/'.$post['addic7ed']);
-			if (strpos($headers[0], '200') === false) {
-				return false;
+			$addic7ed = intval($post['addic7ed']);
+			$headers = get_headers('http://www.addic7ed.com/show/'.$addic7ed);
+			if (strpos($headers[0], '200') !== false) {
+				$this->shows[$id]['addic7ed'] = $addic7ed;
 			}
-			$this->shows[$id]['addic7ed'] = $post['addic7ed'];
+		}
+		if (!empty($post['name'])) {
+			$this->shows[$id]['name'] = Text::chars($post['name']);
+		}
+		if ($post['download'] == 'oui') {
+			$this->shows[$id]['download'] = true;
+		}
+		else {
+			$this->shows[$id]['download'] = false;
 		}
 		$this->save();
 		return true;
@@ -200,7 +275,7 @@ class Manager {
 			|| !isset($this->shows[$id]['seasons'][$snb][$enb])) {
 			return false;
 		}
-		$show = Text::purge(Text::unchars($this->shows[$id]['name']));
+		$show = Text::purge(Text::unchars($this->shows[$id]['name']), false);
 		$dom = new DOMDocument();
 		libxml_use_internal_errors(true);
 		$dom->loadHTMLFile('http://www.addic7ed.com/ajax_loadShow.php?show='
@@ -378,6 +453,10 @@ class Manager {
 			$arr[] = '<a href="'.$s['url'].'">'.$s['version'].'</a>'.$sigles;
 		}
 		return implode('&nbsp;&nbsp;•&nbsp;&nbsp;', $arr);
+	}
+
+	public static function get_show_name($name) {
+		return str_replace(' ', '.', str_replace('-', ' ', Text::purge($name, false)));
 	}
 
 }

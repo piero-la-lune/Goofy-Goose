@@ -24,6 +24,8 @@ class Trad {
 	const W_DATE = 'Date : ';
 	const W_DESC = 'Synopsis : ';
 	const W_MORE = 'lire…';
+	const W_ACTIVATED = 'Activé';
+	const W_DESACTIVATED = 'Désactivé';
 
 	const W_SEASON_NB = 'Saison %nb%';
 
@@ -52,7 +54,10 @@ class Trad {
 	const F_URL = 'URL :';
 	const F_URL_REWRITING = 'URL rewriting :';
 	const F_LANGUAGE = 'Langue :';
-	const F_ID = 'ID :';
+	const F_ADDIC7ED = 'Addic7ed :';
+	const F_NAME = 'Nom :';
+	const F_DOWNLOAD = 'Téléchargement :';
+	const F_TORRENT_DIR = 'Dossier des torrents :';
 
 	const F_SHOWNAME = 'Nom de la série :';
 
@@ -74,10 +79,10 @@ class Trad {
 	const T_SHOWS = 'Séries';
 	const T_DATA = 'Données';
 	const T_SOON = 'Bientôt…';
-	const T_ADDIC7ED = 'Addic7ed';
 	const T_TORRENT = 'Torrent';
 	const T_SUBTITLES = 'Sous-titres';
 	const T_INFOS = 'Infos';
+	const T_OPTIONS = 'Options';
 
 		# Alertes
 
@@ -89,12 +94,13 @@ class Trad {
 
 	const A_ERROR_NOSHOW = 'Aucune série n\'a été trouvée.';
 	const A_ERROR_ADD = 'Impossible d\'ajouter la série.';
+	const A_ERROR_NETWORK = 'Impossible de récupérer le fichier distant.';
 
 	const A_SUCCESS_INSTALL = 'Goofy Goose est maintenant correctement installé. Connectez-vous pour commencer à l\'utiliser.';
 	const A_SUCCESS_SETTINGS = 'Les préférences ont bien été enregistrées.';
 
 	const A_SUCCESS_ADD = 'La série a bien été ajoutée.';
-	const A_SUCCESS_ADDIC7ED = 'La gestion des sous-titres a bien été ajoutée.';
+	const A_SUCCESS_UPDATE = 'La série a bien été mise à jour.';
 
 	public static $settings = array(
 		'validate_url' => 'L\'url n\'est pas valide.'

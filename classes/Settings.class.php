@@ -53,6 +53,9 @@ class Settings {
 				$this->url_rewriting();
 			}
 		}
+		if (isset($post['torrent_dir'])) {
+			$this->config['torrent_dir'] = $post['torrent_dir'];
+		}
 		if (isset($post['language'])
 			&& Text::check_language($post['language'])
 		) {
@@ -146,6 +149,7 @@ class Settings {
 			'url' => 'http://'.$_SERVER['SERVER_NAME']
 				.Text::dir($_SERVER["SCRIPT_NAME"]),
 			'url_rewriting' => false,
+			'torrent_dir' => DIR_DATABASE,
 			'language' => $language,
 			'user' => array(
 				'login' => 'admin',
@@ -153,6 +157,8 @@ class Settings {
 				'wait' => array(),
 				'cookie' => array(),
 			),
+			'cron_last_update' => time(),
+			'cron_last_download' => time(),
 			'salt' => Text::randomKey(40),
 			'version' => VERSION,
 			'last_update' => false

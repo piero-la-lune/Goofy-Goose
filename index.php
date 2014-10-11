@@ -24,7 +24,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 define('NAME', 'Goofy Goose');
-define('VERSION', '0.3');
+define('VERSION', '1.1');
 define('AUTHOR', 'Pierre Monchalin');
 define('URL', 'http://bugs.derivoile.fr/Goofy-Goose/dashboard');
 
@@ -231,16 +231,53 @@ check_file('.htaccess', "Allow from none\nDeny from all\n");
 ### Cron jobs
 if (isset($cron_job) && $cron_job == true) {
 	$manager = Manager::getInstance();
-	echo 'Cron jobs for Goofy Goose ('.date('r').')'."\n";
-	echo '==========================================================='."\n\n";
-	$shows = $manager->getShows();
-	$keys = array_keys($shows);
-	shuffle($keys);
-	foreach ($keys as $k) {
-		$manager->add(array('id' => $k));
-		echo $shows[$k]['name'].' was updated.'."\n";
+	$time = time();
+	echo "\n".'==========================================================='."\n";
+	echo 'Cron jobs for Goofy Goose ('.date('r').')';
+	echo "\n".'==========================================================='."\n";
+	echo "\n".'+++++++++++++++++ Updating shows details ++++++++++++++++++'."\n";
+	if (($time-$config['cron_last_update']) > D_DAY) {
+		$shows = $manager->getShows();
+		$keys = array_keys($shows);
+		shuffle($keys);
+		foreach ($keys as $k) {
+			$ans = $manager->add(array('id' => $k));
+			if ($ans === true) {
+				echo $shows[$k]['name'].' updated'."\n";
+			}
+			else {
+				echo 'Update failed for '.$shows[$k]['name'].'. Error : “'.$ans.'”.'."\n";
+			}
+		}
 	}
-	echo "\n".'Done.'."\n";
+	else {
+		echo 'Skipped'."\n";
+	}
+	echo "\n".'++++++++++++++++ Downloading torrent files ++++++++++++++++'."\n";
+	$downloads = $manager->getDownloads();
+	foreach ($downloads as $d) {
+		$url = 'http://torrents.thepiratebay.se/'.$d['id'].'/'.$d['name'];
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_BINARYTRANSFER,1);
+		$rawdata = curl_exec($ch);
+		curl_close($ch);
+		if ($rawdata !== false) {
+			$file = fopen($config['torrent_dir'].$d['name'], 'w');
+			fwrite($file, $rawdata); 
+			fclose($file);
+			$manager->setDownloaded($d['showid'], $d['no']);
+			echo 'Downloaded '.$d['name']."\n";
+		}
+		else {
+			echo 'Download failed for '.$d['name']."\n";
+		}
+	}
+	if (count($downloads) == 0) {
+		echo 'No download for now.'."\n";
+	}
+	echo "\n".'++++++++++++++++++++++++++ Done +++++++++++++++++++++++++++'."\n";
 	exit;
 }
 

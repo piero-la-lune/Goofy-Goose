@@ -44,7 +44,7 @@ class Url {
 			'redirect' => 'index.php?page=ajax'
 		),
 		array(
-			'rule' => '^addic7ed/([a-z0-9-]+)/(s[0-9]{2}e[0-9]{2})/((fr)|(en))/(.*)$',
+			'rule' => '^addic7ed/([A-Za-z0-9-]+)/(s[0-9]{2}e[0-9]{2})/((fr)|(en))/(.*)$',
 			'redirect' => 'index.php?page=addic7ed&show=$1&episode=$2&&lang=$3&url=$6'
 		)
 	);
