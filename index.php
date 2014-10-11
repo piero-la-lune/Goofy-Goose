@@ -344,6 +344,7 @@ if ($page->printHeader()) {
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
 		<link rel="stylesheet" href="<?php echo Url::parse('public/css/app.min.css'); ?>" />
+		<link rel="icon" type="image/png" sizes="16x16" href="<?php echo Url::parse('public/favicon.png'); ?>" />
 
 		<title><?php echo $page->getTitle(); ?></title>
 
