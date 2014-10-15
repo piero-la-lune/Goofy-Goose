@@ -23,6 +23,8 @@ class Manager {
 		CURLOPT_SSL_VERIFYPEER => false
 	);
 
+	protected static $uploaders = array('Drarbg', 'eztv');
+
 	public function __construct() {
 		global $config;
 		$this->shows = Text::unhash(get_file(FILE_SHOWS));
@@ -118,11 +120,13 @@ class Manager {
 					$table = explode("<tr>", $dom->saveHTML($table));
 					$idTPB = false;
 					$seedsTPB = 9;
-					for ($i=1; $i < count($table); $i++) { 
+					for ($i=1; $i < count($table); $i++) {
 						$t = explode("\n", $table[$i]);
 						$seeds = preg_replace('#(.*)>(.*)<(.*)#', '$2',
 							array_shift(preg_grep('#align="right"#', $t)));
-						if ($seeds > $seedsTPB) {
+						$uploader = preg_replace('#(.*)/user/([A-Za-z0-9\._-]*)("|/)(.*)#', '$2',
+							array_shift(preg_grep('#/user#', $t)));
+						if ($seeds > $seedsTPB && in_array($uploader, self::$uploaders)) {
 							$seedsTPB = $seeds;
 							$idTPB = preg_replace('#(.*)torrent/([0-9]+)/(.*)#', '$2',
 							array_shift(preg_grep('#detLink#', $t)));
