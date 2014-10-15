@@ -249,6 +249,9 @@ if (isset($cron_job) && $cron_job == true) {
 				echo 'Update failed for '.$shows[$k]['name'].'. Error : “'.$ans.'”.'."\n";
 			}
 		}
+		$config['cron_last_update'] = time();
+		$settings = new Settings();
+		$settings->save();
 	}
 	else {
 		echo 'Skipped'."\n";
