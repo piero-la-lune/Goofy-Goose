@@ -264,6 +264,7 @@ if (isset($cron_job) && $cron_job == true) {
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+		curl_setopt($ch, CURLOPT_ENCODING , 'gzip, deflate');
 		$rawdata = curl_exec($ch);
 		curl_close($ch);
 		if ($rawdata !== false) {
