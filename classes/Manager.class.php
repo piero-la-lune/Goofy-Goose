@@ -23,8 +23,6 @@ class Manager {
 		CURLOPT_SSL_VERIFYPEER => false
 	);
 
-	protected static $uploaders = array('Drarbg', 'eztv');
-
 	public function __construct() {
 		global $config;
 		$this->shows = Text::unhash(get_file(FILE_SHOWS));
@@ -110,35 +108,9 @@ class Manager {
 						continue;
 					}
 					$no = Manager::no($snb, $enb);
-					$dom = new DOMDocument();
-					libxml_use_internal_errors(true);
-					$dom->loadHTMLFile('http://thepiratebay.se/s/?'
-						.http_build_query(array('q' => $sh['name'].' '.$no.' 720p'))
-					);
-					libxml_clear_errors();
-					$table = $dom->getElementById('searchResult');
-					$table = explode("<tr>", $dom->saveHTML($table));
-					$idTPB = false;
-					$seedsTPB = 9;
-					for ($i=1; $i < count($table); $i++) {
-						$t = explode("\n", $table[$i]);
-						$seeds = preg_replace('#(.*)>(.*)<(.*)#', '$2',
-							array_shift(preg_grep('#align="right"#', $t)));
-						$uploader = preg_replace('#(.*)/user/([A-Za-z0-9\._-]*)("|/)(.*)#', '$2',
-							array_shift(preg_grep('#/user#', $t)));
-						if ($seeds > $seedsTPB && in_array($uploader, self::$uploaders)) {
-							$seedsTPB = $seeds;
-							$idTPB = preg_replace('#(.*)torrent/([0-9]+)/(.*)#', '$2',
-							array_shift(preg_grep('#detLink#', $t)));
-						}
-					}
-					if ($idTPB) {
-						$downloads[] = array(
-							'id' => $idTPB,
-							'name' => self::get_show_name($sh['name']).'-'.$no.'.torrent',
-							'showid' => $k,
-							'no' => $no
-						);
+					$rep = DownloadsKickass::search($sh['name'], $no, $k);
+					if ($rep) {
+						$downloads[] = $rep;
 					}
 				}
 			}
@@ -433,12 +405,16 @@ class Manager {
 							.'<a href="http://thepiratebay.se/s/?'
 								.http_build_query(array(
 									'q' => $showname.' '.$no
-								)).'">TBP</a>'
+								)).'">TPB</a>'
 							.'&nbsp;&nbsp;•&nbsp;&nbsp;'
 							.'<a href="http://thepiratebay.se/s/?'
 								.http_build_query(array(
 									'q' => $showname.' '.$no.' 720p'
-								)).'">TBP 720p</a>'
+								)).'">TPB 720p</a>'
+							.'&nbsp;&nbsp;•&nbsp;&nbsp;'
+							.'<a href="http://kickass.so/usearch/'
+								.rawurlencode($showname.' '.$no.' 720p')
+								.'/?field=seeders&sorder=desc">Kickass 720p</a>'
 						.'</div>'
 						.$subtitles
 					.'</div>'

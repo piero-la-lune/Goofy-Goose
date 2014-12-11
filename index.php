@@ -259,11 +259,11 @@ if (isset($cron_job) && $cron_job == true) {
 	echo "\n".'++++++++++++++++ Downloading torrent files ++++++++++++++++'."\n";
 	$downloads = $manager->getDownloads();
 	foreach ($downloads as $d) {
-		$url = 'http://torrents.thepiratebay.se/'.$d['id'].'/'.$d['name'];
-		$ch = curl_init($url);
+		$ch = curl_init($d['url']);
 		curl_setopt($ch, CURLOPT_HEADER, 0);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_BINARYTRANSFER,1);
+		curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 		$rawdata = curl_exec($ch);
 		curl_close($ch);
 		if ($rawdata !== false) {
