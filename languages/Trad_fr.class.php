@@ -58,6 +58,7 @@ class Trad {
 	const F_NAME = 'Nom :';
 	const F_DOWNLOAD = 'Téléchargement :';
 	const F_TORRENT_DIR = 'Dossier des torrents :';
+	const F_APIKEY = 'Clé API TheTVDB :';
 
 	const F_SHOWNAME = 'Nom de la série :';
 
@@ -93,7 +94,7 @@ class Trad {
 	const A_ERROR_AJAX_LOGIN = 'Vous êtes déconnecté. Raffraichissez la page, connectez-vous, puis vous pourrez réessayer.';
 
 	const A_ERROR_NOSHOW = 'Aucune série n\'a été trouvée.';
-	const A_ERROR_ADD = 'Impossible d\'ajouter la série.';
+	const A_ERROR_ADD = 'Impossible d\'ajouter la série. Vérifiez votre clé API de TheTVDB.';
 	const A_ERROR_NETWORK = 'Impossible de récupérer le fichier distant.';
 
 	const A_SUCCESS_INSTALL = 'Goofy Goose est maintenant correctement installé. Connectez-vous pour commencer à l\'utiliser.';

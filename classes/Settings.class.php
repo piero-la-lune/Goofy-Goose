@@ -41,6 +41,9 @@ class Settings {
 				$this->errors[] = 'validate_url';
 			}
 		}
+		if (isset($post['thetvdb_apikey'])) {
+			$this->config['thetvdb_apikey'] = $post['thetvdb_apikey'];
+		}
 		if (isset($post['url_rewriting'])) {
 			if (empty($post['url_rewriting'])) {
 				$this->config['url_rewriting'] = false;

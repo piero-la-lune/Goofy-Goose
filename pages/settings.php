@@ -56,6 +56,9 @@
 	<select id="language" name="language">
 		'.Text::options($languages, $config['language']).'
 	</select></p>
+	<p><label for="thetvdb_apikey">'.Trad::F_APIKEY.'</label>
+	<input type="text" name="thetvdb_apikey" id="thetvdb_apikey" value="'
+		.Text::chars($config['thetvdb_apikey']).'" /></p>
 	<p><label for="torrent_dir">'.Trad::F_TORRENT_DIR.'</label>
 	<input type="text" name="torrent_dir" id="torrent_dir" value="'
 		.Text::chars($config['torrent_dir']).'" /></p>

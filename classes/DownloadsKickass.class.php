@@ -22,7 +22,8 @@ class DownloadsKickass {
 		libxml_clear_errors();
 		$table = $dom->getElementById('mainSearchTable');
 		$table = $dom->saveHTML($table);
-		if (preg_match('#<tr class="(odd|even)" id="(.*)">(.*)'
+		if (strpos($table, 'did not match any documents') !== false
+			|| preg_match('#<tr class="(odd|even)" id="(.*)">(.*)'
 			.'<td>(.*)"(http://torcache(.*))"(.*)/user/(.*)/(.*)</td>(.*)'
 			.'<td(.*)>(.*)</td>(.*)'
 			.'<td(.*)>(.*)</td>(.*)'

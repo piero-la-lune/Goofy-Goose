@@ -24,7 +24,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 define('NAME', 'Goofy Goose');
-define('VERSION', '1.1');
+define('VERSION', '1.2');
 define('AUTHOR', 'Pierre Monchalin');
 define('URL', 'http://bugs.derivoile.fr/Goofy-Goose/dashboard');
 
@@ -374,7 +374,7 @@ if ($page->printHeader()) {
 echo "var ajax_url = '".Url::parse('ajax')."';";
 echo "var m_error_ajax = '".Text::js_str(Trad::A_ERROR_AJAX)."';";
 echo "var m_error_login = '".Text::js_str(Trad::A_ERROR_AJAX_LOGIN)."';";
-echo "var page = '".Text::js_str($_GET['page'])."';";
+echo "var page = '".Text::js_str($page->getPageName())."';";
 		?></script>
 		<script src="<?php echo Url::parse('public/js/app.min.js'); ?>"></script>
 

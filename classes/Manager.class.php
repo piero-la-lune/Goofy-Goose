@@ -148,11 +148,12 @@ class Manager {
 	}
 
 	public function add($post) {
+		global $config;
 		if (!isset($post['id'])) {
 			return Trad::A_ERROR_ADD;
 		}
 		$id = intval($post['id']);
-		$url = 'http://thetvdb.com/data/series/'.$id.'/all/';
+		$url = 'http://thetvdb.com/api/'.$config['thetvdb_apikey'].'/series/'.$id.'/all/en.xml';
 		if (!Url::is_correct_url($url)) {
 			return Trad::A_ERROR_ADD;
 		}

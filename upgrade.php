@@ -54,6 +54,10 @@ if (strict_lower($config['version'], '1.1')) {
 
 }
 
+if (strict_lower($config['version'], '1.2')) {
+	$config['thetvdb_apikey'] = '';
+}
+
 
 $settings = new Settings();
 if ($config['url_rewriting']) { $settings->url_rewriting(); }

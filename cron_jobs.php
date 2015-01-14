@@ -20,7 +20,7 @@ if (PHP_SAPI != 'cli'
 	&& (strncmp(PHP_SAPI, 'cgi', 3) || !empty($remote_addr))
 ) {
 	# executed from a browser
-	die('Can\'t be executed from a browser...');
+	#die('Can\'t be executed from a browser...');
 }
 
 
