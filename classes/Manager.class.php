@@ -223,7 +223,9 @@ class Manager {
 		else {
 			$addic7ed = intval($post['addic7ed']);
 			$headers = get_headers('http://www.addic7ed.com/show/'.$addic7ed);
-			if (strpos($headers[0], '200') !== false) {
+			if (strpos($headers[0], '200') !== false
+				|| strpos($headers[0], '304')
+			) {
 				$this->shows[$id]['addic7ed'] = $addic7ed;
 			}
 		}
